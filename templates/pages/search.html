@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style type="text/css">
+	
+.w-15{
+    width: 15% !important;
+}
+</style>
+<div class="row">
+    <div class="col-2 ml-3">
+        <!-- <ul class="list-group">
+            <a href="index.php" class="btn-link">
+                <li class="list-group-item">Home</li>
+            </a>
+            {% for cet in cet1 %}
+            <a href="products/{{cet.link}}" class="btn-link">
+                <li class="list-group-item"> {{cet.title}} </li>
+            </a>
+            {% endfor %}
+            <a href="#" class="btn-link">
+                <li class="list-group-item">More</li>
+            </a>
+        </ul> -->
+    </div>
+    <div class="col-9">
+        <form>
+            <div class="form-inline">
+                <input type="text" name="sq" placeholder="Search Here" class="form-control col-md-8" style="border-radius: .25rem 0 0 .25rem" value="">
+                <select class="form-control mr-2" style="border-radius: 0 .25rem .25rem 0;" name="site_selected">
+                    <option value="all">Select Site</option>
+                    <option value="amazon">Amazon</option>
+                    <option value="ebay">Ebay</option>
+                    <option value="newegg">Newegg</option>
+                    <option value="walmart">Walmart</option>
+                    <option value="bestbuy">BestBuy</option>
+                    <option value="target">Target</option>
+                    <option value="jet">Jet</option>
+                </select>
+                <input type="submit" name="sq-submit" value="Search" class="btn btn-dark">
+            </div>
+        </form>
+        <div class="row mt-4">
+            <div class="col">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'js/scraperjs.js' %}"></script>
+{% endblock %}

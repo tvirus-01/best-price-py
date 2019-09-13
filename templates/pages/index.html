@@ -1,6 +1,52 @@
 {% extends 'base.html' %}
 {% block content %}
-
-<h1>HOME</h1>
+{% load static %}
+<div class="row justify-content-center">
+	<div class="col text-center">
+		<h1 class="text-primary" style="font-size: 8rem;">Best Price</h1>
+	</div>
+</div>
+<div class="row mt-5">
+	<div class="col-2 ml-3">
+		<!-- <ul class="list-group">
+			<a href="home" class="btn-link">
+				<li class="list-group-item">Home</li>
+			</a>
+			{% for cet in cet1 %}
+			<a href="products/{{cet.link}}" class="btn-link">
+				<li class="list-group-item"> {{cet.title}} </li>
+			</a>
+			{% endfor %}
+			<a href="#" class="btn-link">
+				<li class="list-group-item">More</li>
+			</a>
+		</ul> -->
+	</div>
+	<div class="col-9">
+		<form action="{% url 'search' %}">
+			<div class="form-inline">
+				<input type="text" name="sq" placeholder="Search Here" class="form-control col-md-8" style="border-radius:.25rem 0 0 .25rem">
+				<select class="form-control mr-2" style="border-radius: 0 .25rem .25rem 0;" name="site_selected">
+					<option selected value="0">Select Site</option>
+					{% for k, v in site_choices.items %}
+						<option value="{{ k }}">{{ v }}</option>
+					{% endfor %}
+				</select>
+				<input type="submit" name="sq-submit" value="Search" class="btn btn-dark">
+			</div>
+		</form>
+	</div>
+</div>
+<div class="row justify-content-center" style="margin-top: 6rem;">
+	<div class="col-10">
+		<div class="row">
+			{% for logo in site_logo_choices %}
+			<div class="col">
+				<img src="{% static logo %}" style="width: 6rem;">
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
 
 {% endblock %}
