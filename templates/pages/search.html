@@ -7,6 +7,19 @@
 .w-15{
     width: 15% !important;
 }
+.search-img-div{
+	width: 30% !important; 
+	float: left;
+}
+
+.search-img-div img{
+    width: 100% !important;
+    height: 250px;
+}
+.search-info-div{
+	width: 70% !important; 
+	float: left;
+}
 </style>
 <div class="row">
     <div class="col-2 ml-3">
@@ -27,26 +40,47 @@
     <div class="col-9">
         <form>
             <div class="form-inline">
-                <input type="text" name="sq" placeholder="Search Here" class="form-control col-md-8" style="border-radius: .25rem 0 0 .25rem" value="">
+                <input type="text" name="sq" placeholder="Search Here" class="form-control col-md-8" style="border-radius: .25rem 0 0 .25rem" value="{{query}}">
                 <select class="form-control mr-2" style="border-radius: 0 .25rem .25rem 0;" name="site_selected">
                     <option value="all">Select Site</option>
-                    <option value="amazon">Amazon</option>
-                    <option value="ebay">Ebay</option>
-                    <option value="newegg">Newegg</option>
-                    <option value="walmart">Walmart</option>
-                    <option value="bestbuy">BestBuy</option>
-                    <option value="target">Target</option>
-                    <option value="jet">Jet</option>
+                    <option value="amazon" id="am">Amazon</option>
+                    <option value="ebay" id="eb">Ebay</option>
+                    <option value="newegg" id="ng">Newegg</option>
+                    <option value="walmart" id="wm">Walmart</option>
+                    <option value="bestbuy" id="bb">BestBuy</option>
+                    <option value="target" id="tg">Target</option>
+                    <option value="jet" id="jt">Jet</option>
                 </select>
                 <input type="submit" name="sq-submit" value="Search" class="btn btn-dark">
             </div>
         </form>
         <div class="row mt-4">
             <div class="col">
-            </div>
+                {% for prd in bb %}
+                    {{prd|safe}}
+                {% endfor %}
+            </div>        
         </div>
     </div>
 </div>
 
 <script type="text/javascript" src="{% static 'js/scraperjs.js' %}"></script>
+<script type"text/javascript">
+    var site = "{{site}}"
+    if(site == 'amazon'){
+        document.getElementById('am').setAttribute('selected','selected');
+    }else if(site == 'ebay'){
+        document.getElementById('eb').setAttribute('selected','selected');
+    }else if(site == 'newegg'){
+        document.getElementById('ng').setAttribute('selected','selected');
+    }else if(site == 'walmart'){
+        document.getElementById('wm').setAttribute('selected','selected');
+    }else if(site == 'bestbuy'){
+        document.getElementById('bb').setAttribute('selected','selected');
+    }else if(site == 'target'){
+        document.getElementById('tg').setAttribute('selected','selected');
+    }else if(site == 'jet'){
+        document.getElementById('jt').setAttribute('selected','selected');
+    }
+</script>
 {% endblock %}
