@@ -20,16 +20,16 @@ def search(request):
         context['site'] = str(site)
         
         if site == 'bestbuy':
-            context['bb'] = Scraper.bestBuyList(search_query)
+            context['bb'] = Scraper.bestBuyList(search_query, site)
         elif site == 'amazon':
-            context['bb'] = Scraper.amazonList(search_query)  
+            context['bb'] = Scraper.amazonList(search_query, site)  
         elif site == 'ebay':
-            context['bb'] = Scraper.ebayList(search_query)
+            context['bb'] = Scraper.ebayList(search_query, site)
         elif site == 'newegg':
-            context['bb'] = Scraper.neweggList(search_query)
+            context['bb'] = Scraper.neweggList(search_query, site)
         elif site == 'walmart':
-            context['bb'] = Scraper.walmartList(search_query)
+            context['bb'] = Scraper.walmartList(search_query, site)
         elif site == 'jet':
-            context['bb'] = Scraper.jetList(search_query)      
+            context['bb'] = Scraper.jetList(search_query, site)      
         
     return render(request, 'pages/search.html', context)

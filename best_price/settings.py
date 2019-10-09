@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'product_details.apps.ProductDetailsConfig',
     'scraper.apps.ScraperConfig',
     'pages.apps.PagesConfig',
     'django.contrib.admin',
