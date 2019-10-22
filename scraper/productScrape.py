@@ -1,11 +1,14 @@
 import io
 import bs4
 import requests as re
+import time,cgi,cgitb,random
 from django.http import HttpResponse
+from .scraperCmp import cmPscraper
 
 class prdctScrapEr:
     def prdTmplT(title, price, img, data, site, sitelogo, link):
         w = ''
+        w += '<div class="row">'
         w += '<div class="col">'
         w += '<h3>'+title+'</h3>'
         w += '<span>'+price+'</span>'
@@ -14,7 +17,7 @@ class prdctScrapEr:
         w += '<br><a target="blank" class="btn btn-success" href="'+link+'">Buy Now</a>'
         w += '</div><div class="col">'
         w += '<img class="prdimg" src="'+img+'">'
-        w += '</div>'
+        w += '</div></div>'
 
         return w
 
@@ -42,9 +45,10 @@ class prdctScrapEr:
             img = liist.find("img", src=True)["src"]
             src = img.split(';')[0]
             imgsrc[i] = src
-            i = i+1
-            
+            i = i+1   
+
         return prdctScrapEr.prdTmplT(title, price, imgsrc[1], data_section, site, sitelogo, link)
+        #return cmPscraper.amaZonCmp(title)
 
     def ebayPrdDtl(link):
         site = 'https://www.ebay.com'  
@@ -83,37 +87,68 @@ class prdctScrapEr:
         return prdctScrapEr.prdTmplT(title, price, imgsrc[1], model, site, sitelogo, link)
 
 
-    def amazonPrdDtl(link, title, price, imgsrc):
+    def amazonPrdDtl(link):
+        link = link.split('/')
+        assain_num = link[5]
         site = 'https://www.amazon.com'
         sitelogo = 'amazon.png'
-        # headers = {"User-agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"}
-        # url = link
-        # data = re.get(url,headers=headers)
-        # soup = bs4.BeautifulSoup(data.text, 'html.parser')        
-        model = ''
-        return prdctScrapEr.prdTmplT(title, price, model, site, sitelogo, link)    
+        headers = {"User-agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"}
+        url = site+'/dp/'+assain_num
+        data = re.get(url,headers=headers)
+        soup = bs4.BeautifulSoup(data.content,"lxml")
 
-    def neweggPrdDtl(link):
+        # pTitle = soup.find(id='productTitle')
+        header = soup.find("div", {"id":"titleSection"})
+        title = header.find('h1').text
+
+        pricediv = soup.find("div", {"id":"priceInsideBuyBox_feature_div"})
+
+        if pricediv == None:
+            price = '$--'
+        else:
+            price = pricediv.text    
+
+        img_div = soup.find("ul", {"class":"a-unordered-list a-nostyle a-button-list a-vertical a-spacing-top-micro"})
+        if img_div == None:
+            img_div = soup.find("ul", {"class":"a-unordered-list a-nostyle a-button-list a-vertical a-spacing-top-extra-large"})
+        img_li = img_div.find("li", {"class":"a-spacing-small item"})
+        img_sp = img_li.find("span", {"class":"a-button-text"})
+        img = img_sp.find("img")['src']
+        imgsrc = img.replace('40', '500')
+
+        data_section = soup.find("div", {"id":"variation_style_name"})
+        if data_section == None:
+            model = ''
+        else:
+            model = data_section.text    
+
+        #return imgsrc
+        return prdctScrapEr.prdTmplT(title, price, imgsrc, model, site, sitelogo, url)
+
+    def neweggPrdDtl(link, price):
         headers = {"User-agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"}
         url = link
         data = re.get(url,headers=headers)
-        soup = bs4.BeautifulSoup(data.text, 'html.parser')
+        soup = bs4.BeautifulSoup(data.content, 'lxml')
         
         title = soup.find("div", {"class":"wrapper"}).text
-        price = soup.find("li", {"class":"price-current"})
-        if price == None:
-            price = "$--"
-        else:
-            price = price.text    
+        #price = soup.find("div", {"id":"continueReal"})
+        # if price == None:
+        #price = "$--"
+        # else:
+        #     price = price.text    
         
         model = ''
         site = 'newegg'
         sitelogo = 'newegg.png'
 
-        imgdiv = soup.find("div", {"class":"objImages"})
-        img = imgdiv.find("img")["src"]
+        imgdiv = soup.find("ul", {"class":"navThumbs"})
+        imgdivv =   imgdiv.find("li")
+        img = imgdivv.find("img")["src"]
+        imgsrc = img.replace('ProductImageCompressAll35', 'ProductImage')
         
-        return prdctScrapEr.prdTmplT(title, price, img, model, site, sitelogo, link)
+        return prdctScrapEr.prdTmplT(title, '$'+price, imgsrc, model, site, sitelogo, link)
+        #return img
 
     def walmartPrdDtl(link):
         headers = {"User-agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"}

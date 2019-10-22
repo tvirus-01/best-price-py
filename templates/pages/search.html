@@ -41,14 +41,14 @@
         <form name="searchform">
             <div class="form-inline">
                 <input type="text" name="sq" placeholder="Search Here" class="form-control col-md-8" style="border-radius: .25rem 0 0 .25rem" value="{{query}}">
-                <select class="form-control mr-2" id="site-select" style="border-radius: 0 .25rem .25rem 0;" name="site_selected" onchange="changeFun()">
+                <select class="form-control mr-2" id="site-select" style="border-radius: 0 .25rem .25rem 0;" name="site_selected">
                     <option value="all">Select Site</option>
                     <option value="amazon" id="am">Amazon</option>
                     <option value="ebay" id="eb">Ebay</option>
                     <option value="newegg" id="ng">Newegg</option>
                     <option value="walmart" id="wm">Walmart</option>
                     <option value="bestbuy" id="bb">BestBuy</option>
-                    <option value="target" id="tg">Target</option>
+                    <!-- <option value="target" id="tg">Target</option> -->
                     <option value="jet" id="jt">Jet</option>
                 </select>
                 <input type="submit" id="search-submit" name="sq-submit" value="Search" class="btn btn-dark">

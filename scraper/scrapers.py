@@ -9,7 +9,7 @@ class Scraper:
         w += '<div class="search-img-div">'
         w += '<img src="'+imgsrc+'">'
         w += '</div><div class="search-info-div">'
-        w += '<a href="products?link='+link+'&site='+site+'"><h4>'+title+'</h4></a>'
+        w += '<a href="products?link='+link+'&site='+site+'&price='+price+'&title='+title+'"><h4>'+title+'</h4></a>'
         w += '<span>$'+price+'</span>'
         w += '</div></div>'
 
@@ -34,8 +34,11 @@ class Scraper:
             link = "https://bestbuy.com"+header.find("a", href=True)['href']
             
             pricediv = item.find("div", {"class":"priceView-customer-price"})
-            price = pricediv.find("span").text
-            price = Scraper.priceFiltr(price)
+            if pricediv == None:
+                price = '$--.00'
+            else:    
+                price = pricediv.find("span").text
+                price = Scraper.priceFiltr(price)
 
             img = item.find("img", {"class":"product-image"})["src"]
             imgsrc = img.split(';')[0]
@@ -64,7 +67,7 @@ class Scraper:
                 title = "Title didn't found"
             else:    
                 title = header.find("a").text
-                link = header.find("a")["href"]
+                link = 'https://amazon.com'+header.find("a")["href"]
             
             pricediv = item.find("a", {"class":"a-size-base a-link-normal s-no-hover a-text-normal"})
             if pricediv == None:
@@ -99,7 +102,7 @@ class Scraper:
             newlink = link.split("&")[0]
             
             price = info.find("span", {"class":"s-item__price"}).text
-            price = Scraper.priceFiltr(price)
+            #price = Scraper.priceFiltr(price)
 
             imgsec = item.find("div", {"class":"s-item__image-section"})
             img = imgsec.find("img", {"class":"s-item__image-img"})["src"]
@@ -113,9 +116,10 @@ class Scraper:
         headers = {"User-agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"}
         url = "https://www.newegg.com/p/pl?d="+query
         data = re.get(url,headers=headers)
-        soup = bs4.BeautifulSoup(data.text, 'html.parser')
+        soup = bs4.BeautifulSoup(data.content, 'lxml')
         
-        items = soup.find("div", {"class":"items-view"})
+        items_container = soup.find("div", {"class":"list-wrap"})
+        items = items_container.find("div", {"class":"items-view"})
         
         prdList = []
         for item in items.find_all("div", {"class":"item-container"}):
