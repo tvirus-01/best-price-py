@@ -33,7 +33,7 @@ def products(request):
             for i in fruit:
                 context['prdCMp'].append(i)
         if site == 'amazon':
-            context['prdtl'] = prdctScrapEr.amazonPrdDtl(link)
+            context['prdtl'] = prdctScrapEr.amazonPrdDtl(link, title)
             fruit = [cmPscraper.bestBuyCmp(title),
                     cmPscraper.ebayCmp(title),
                     cmPscraper.newEggCmp(title),

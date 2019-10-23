@@ -11,6 +11,7 @@ class Scraper:
         w += '</div><div class="search-info-div">'
         w += '<a href="products?link='+link+'&site='+site+'&price='+price+'&title='+title+'"><h4>'+title+'</h4></a>'
         w += '<span>$'+price+'</span>'
+        w += '<a href="'+link+'" class="btn btn-success float-right btn-bn" target="blank">Buy Now</a>'
         w += '</div></div>'
 
         return w
@@ -65,6 +66,7 @@ class Scraper:
             header = item.find("h2", {"class":"a-size-mini a-spacing-none a-color-base s-line-clamp-2"})
             if header == None:
                 title = "Title didn't found"
+                link = '#'
             else:    
                 title = header.find("a").text
                 link = 'https://amazon.com'+header.find("a")["href"]
@@ -174,7 +176,7 @@ class Scraper:
         headers = {"User-agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36"}
         url = "https://jet.com/search?term="+query
         data = re.get(url,headers=headers)
-        soup = bs4.BeautifulSoup(data.text, 'html.parser')
+        soup = bs4.BeautifulSoup(data.content, 'lxml')
         
         items = soup.find("div", {"class":"eCjsou"})
         
@@ -190,8 +192,22 @@ class Scraper:
             else:
                 price = price_div.find("span", {"class":"hIuNJJ"}).text
                 price = Scraper.priceFiltr(price)    
+            imgsrc = 'https://i.ibb.co/PZ1nhDp/No-Image-Found-jpg.png'
 
-            prdList.append(Scraper.prdTmplt('https://images.unsplash.com/photo-1568650620424-23336b69ba8b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80', title, price, link, site)) 
+            prdList.append(Scraper.prdTmplt(imgsrc, title, price, link, site)) 
 
         allProduct = prdList
-        return allProduct           
+        return allProduct
+
+    def selectSite(self):
+        w = ''
+        w += '<div class="row mt-5 p-2">'               
+        w += '<div class="col">'
+        w += '<h1>Please select a website</h1>'               
+        w += '</div>'               
+        w += '</div>'
+
+        prdlist = []
+        prdlist.append(w)
+
+        return prdlist               

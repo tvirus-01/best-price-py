@@ -311,6 +311,6 @@ class cmPscraper:
             else:
                 price = price_div.find("span", {"class":"hIuNJJ"}).text
 
-            imgsrc = 'https://cdn.dribbble.com/users/1554526/screenshots/3399669/no_results_found.png'    
+            imgsrc = 'https://i.ibb.co/PZ1nhDp/No-Image-Found-jpg.png" alt="No-Image-Found-jpg'    
 
             return cmPscraper.cmpTmplt(title, 'Jet', imgsrc, price, link)              

@@ -30,6 +30,8 @@ def search(request):
         elif site == 'walmart':
             context['bb'] = Scraper.walmartList(search_query, site)
         elif site == 'jet':
-            context['bb'] = Scraper.jetList(search_query, site)      
+            context['bb'] = Scraper.jetList(search_query, site)
+        else:
+            context['bb'] = Scraper.selectSite(site)          
         
     return render(request, 'pages/search.html', context)

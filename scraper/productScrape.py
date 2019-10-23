@@ -86,8 +86,7 @@ class prdctScrapEr:
 
         return prdctScrapEr.prdTmplT(title, price, imgsrc[1], model, site, sitelogo, link)
 
-
-    def amazonPrdDtl(link):
+    def amazonPrdDtl(link, title):
         link = link.split('/')
         assain_num = link[5]
         site = 'https://www.amazon.com'
@@ -99,7 +98,10 @@ class prdctScrapEr:
 
         # pTitle = soup.find(id='productTitle')
         header = soup.find("div", {"id":"titleSection"})
-        title = header.find('h1').text
+        if header == None:
+            pass
+        else:    
+            title = header.find('h1').text
 
         pricediv = soup.find("div", {"id":"priceInsideBuyBox_feature_div"})
 
@@ -111,10 +113,14 @@ class prdctScrapEr:
         img_div = soup.find("ul", {"class":"a-unordered-list a-nostyle a-button-list a-vertical a-spacing-top-micro"})
         if img_div == None:
             img_div = soup.find("ul", {"class":"a-unordered-list a-nostyle a-button-list a-vertical a-spacing-top-extra-large"})
-        img_li = img_div.find("li", {"class":"a-spacing-small item"})
-        img_sp = img_li.find("span", {"class":"a-button-text"})
-        img = img_sp.find("img")['src']
-        imgsrc = img.replace('40', '500')
+
+        if img_div == None:
+            imgsrc = 'https://i.ibb.co/PZ1nhDp/No-Image-Found-jpg.png'
+        else:        
+            img_li = img_div.find("li", {"class":"a-spacing-small item"})
+            img_sp = img_li.find("span", {"class":"a-button-text"})
+            img = img_sp.find("img")['src']
+            imgsrc = img.replace('40', '500')
 
         data_section = soup.find("div", {"id":"variation_style_name"})
         if data_section == None:
@@ -183,7 +189,5 @@ class prdctScrapEr:
         site = 'jet'
         sitelogo = 'jet.png'
 
-        imgdiv = soup.find("div", {"class":"dMYUrf"})
-        img = imgdiv.find("img")['src'] 
-        print(img)
-        return prdctScrapEr.prdTmplT(title, pricediv, img, model, site, sitelogo, link) 
+        imgsrc = 'https://i.ibb.co/PZ1nhDp/No-Image-Found-jpg.png'
+        return prdctScrapEr.prdTmplT(title, pricediv, imgsrc, model, site, sitelogo, link) 
