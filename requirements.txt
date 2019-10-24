@@ -1,0 +1,14 @@
+bs4==0.0.1
+Django==2.2.5
+django-heroku==0.3.1
+get==2019.4.13
+gunicorn==19.9.0
+html5lib==1.0.1
+ipython==7.8.0
+lxml==4.4.1
+QtPy==1.9.0
+request==2019.4.13
+requests==2.22.0
+requests-html==0.10.0
+selenium==3.141.0
+urllib3==1.24.2
